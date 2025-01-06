@@ -1,35 +1,37 @@
-version: "3.8"
-
 # start build
 # docker compose -f /PATH/docker-base/docker-compose.yml build --no-cache
 # running Docker in interactive mode
-# docker run --rm -it icellmobilsoft/base /bin/bash
+# docker run --rm -it qubiq/base /bin/bash
 # start image
-# docker run --rm icellmobilsoft/base
+# docker run --rm qubiq/base
 # checking labels
-# docker inspect icellmobilsoft/base:1.0.0 | jq -r '.[0].Config.Labels'
+# docker inspect qubiq/base:1.5.0 | jq -r '.[0].Config.Labels'
 
 services:
 
-  # icellmobilsoft/base
+  # base
   base-release:
     build:
       context: .
       dockerfile: dockerfile/bases/base/Dockerfile
       args:
         BASE_IMAGE: $BASE_IMAGE
+        SYSTEM_USER_DEFAULT: $SYSTEM_USER_DEFAULT
+        SYSTEM_USER_GROUP_DEFAULT: $SYSTEM_USER_GROUP_DEFAULT
     image: $DOCKER_IMAGE_BASE
 
-  # icellmobilsoft/base-alpine
+  # base-alpine
   base-alpine-release:
     build:
       context: .
       dockerfile: dockerfile/bases/base-alpine/Dockerfile
       args:
         ALPINE_BASE_IMAGE: $ALPINE_BASE_IMAGE
+        SYSTEM_USER_DEFAULT: $SYSTEM_USER_DEFAULT
+        SYSTEM_USER_GROUP_DEFAULT: $SYSTEM_USER_GROUP_DEFAULT
     image: $DOCKER_IMAGE_BASE_ALPINE
 
-  # icellmobilsoft/base-curl
+  # base-curl
   curl-release:
     build:
       context: .
@@ -41,7 +43,7 @@ services:
       base-release: 
         condition: service_completed_successfully
         
-  # icellmobilsoft/base-java11jre
+  # base-java11jre
   java11jre-release:
     build:
       context: .
@@ -54,7 +56,7 @@ services:
       curl-release: 
         condition: service_completed_successfully
   
-  # icellmobilsoft/base-java17jre
+  # base-java17jre
   java17jre-release:
     build:
       context: .
@@ -67,7 +69,7 @@ services:
       curl-release: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/base-java21jre
+  # base-java21jre
   java21jre-release:
     build:
       context: .
@@ -84,7 +86,7 @@ services:
   # builder images
 ##################################
 
-  # icellmobilsoft/builder-alpine-runner
+  # builder-alpine-runner
   alpine-runner-release:
     build:
       context: .
@@ -96,7 +98,7 @@ services:
       base-alpine-release: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java11-maven
+  # builder-java11-maven
   java11-maven-builder:
     build:
       context: .
@@ -111,7 +113,7 @@ services:
       curl-release: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java17-maven
+  # builder-java17-maven
   java17-maven-builder:
     build:
       context: .
@@ -126,7 +128,7 @@ services:
       curl-release: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java21-maven
+  # builder-java21-maven
   java21-maven-builder:
     build:
       context: .
@@ -141,7 +143,7 @@ services:
       curl-release: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java11-galleon
+  # builder-java11-galleon
   java11-galleon-builder:
     build:
       context: .
@@ -154,7 +156,7 @@ services:
       java11-maven-builder: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java17-galleon
+  # builder-java17-galleon
   java17-galleon-builder:
     build:
       context: .
@@ -167,7 +169,7 @@ services:
       java17-maven-builder: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-java21-galleon
+  # builder-java21-galleon
   java21-galleon-builder:
     build:
       context: .
@@ -180,7 +182,7 @@ services:
       java21-maven-builder: 
         condition: service_completed_successfully
 
-  # icellmobilsoft/builder-nexus-download
+  # builder-nexus-download
   nexus-download-builder:
     build:
       context: .
